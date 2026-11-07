@@ -41,14 +41,15 @@ export function CandlestickScene({ scrollProgress = 0 }: CandlestickSceneProps) 
         }}
         style={{ pointerEvents: "auto" }}
       >
-        <color attach="background" args={["#05070A"]} />
-        <fog attach="fog" args={["#05070A", 12, 35]} />
+        <color attach="background" args={["#040609"]} />
+        <fog attach="fog" args={["#040609", 14, 48]} />
 
         {/* Lighting Setup */}
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[10, 15, 10]} intensity={1.2} color="#FFFFFF" />
-        <pointLight position={[-10, 8, 5]} intensity={1.5} color="#00E5A0" />
-        <pointLight position={[10, -5, -5]} intensity={1.2} color="#00D2FF" />
+        <ambientLight intensity={0.55} />
+        <directionalLight position={[10, 18, 12]} intensity={1.5} color="#FFF8DE" />
+        <pointLight position={[-12, 10, 6]} intensity={1.8} color="#00E5A0" />
+        <pointLight position={[12, -4, -4]} intensity={1.6} color="#F5D061" />
+        <pointLight position={[0, 8, 10]} intensity={1.2} color="#00D2FF" />
 
         <Suspense fallback={null}>
           <CandlestickLandscape scrollProgress={scrollProgress} />
@@ -57,9 +58,9 @@ export function CandlestickScene({ scrollProgress = 0 }: CandlestickSceneProps) 
           {!isLowPower && (
             <EffectComposer multisampling={0}>
               <Bloom
-                intensity={0.65}
-                luminanceThreshold={0.4}
-                luminanceSmoothing={0.7}
+                intensity={0.8}
+                luminanceThreshold={0.3}
+                luminanceSmoothing={0.8}
                 mipmapBlur
               />
             </EffectComposer>

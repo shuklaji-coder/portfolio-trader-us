@@ -34,60 +34,54 @@ export function HeroSection() {
       {/* Main Hero Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto text-center flex flex-col items-center justify-center z-10">
         
-        {/* Top Verified Operator Tag */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center space-x-2 rounded-full border border-gold/30 bg-surface/85 px-4 py-1.5 backdrop-blur-xl mb-3 shadow-[0_0_20px_rgba(212,175,55,0.15)]"
-        >
-          <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
-          <span className="text-xs font-mono font-bold tracking-widest text-gold-light uppercase">
-            OFFICIAL PORTFOLIO // CME GLOBEX
-          </span>
-          <span className="text-white/20">|</span>
-          <span className="text-xs font-mono text-slate-300 font-semibold">{siteConfig.handle}</span>
-        </motion.div>
-
-        {/* Big Beautiful Name: WAYLON SKINNER in Monaco Gold Typography */}
+        {/* Luxury Glassmorphism Showcase Shield for Waylon Skinner's Name */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center mb-2"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-4xl mx-auto rounded-3xl border border-gold/35 bg-[#05080e]/85 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_0_60px_rgba(0,0,0,0.85)] mb-6 flex flex-col items-center relative overflow-hidden"
         >
-          <h1 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none my-1 select-none">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300 drop-shadow-md">
+          {/* Subtle gold flare inside shield */}
+          <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-36 bg-gold/15 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Top Verified Operator Tag */}
+          <div className="inline-flex items-center space-x-2 rounded-full border border-gold/30 bg-black/60 px-4 py-1.5 backdrop-blur-xl mb-3 shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+            <span className="h-2 w-2 rounded-full bg-gold animate-ping" />
+            <span className="text-[11px] sm:text-xs font-mono font-bold tracking-widest text-gold-light uppercase">
+              VERIFIED OPERATOR // CME GLOBEX FUTURES
+            </span>
+            <span className="text-white/20">|</span>
+            <span className="text-[11px] sm:text-xs font-mono text-slate-300 font-semibold">{siteConfig.handle}</span>
+          </div>
+
+          {/* Big Beautiful Name: WAYLON SKINNER in Monaco Gold & Platinum Typography */}
+          <h1 className="font-heading text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-none my-1 select-none">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300 drop-shadow-[0_4px_25px_rgba(255,255,255,0.25)]">
               WAYLON{" "}
             </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-[#B38C22] drop-shadow-[0_0_35px_rgba(212,175,55,0.45)]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF5C0] via-gold to-[#B38C22] drop-shadow-[0_0_45px_rgba(212,175,55,0.55)]">
               SKINNER
             </span>
           </h1>
 
           {/* Brand Name Badge & Famous Tagline */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono mt-2.5 mb-1">
-            <span className="rounded-md bg-gradient-to-r from-gold/20 to-gold/10 border border-gold/40 px-2.5 py-0.5 font-bold text-gold-light tracking-wider shadow-sm">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono mt-3 mb-1">
+            <span className="rounded-lg bg-gradient-to-r from-gold/25 via-gold/15 to-gold/25 border border-gold/50 px-3 py-1 font-bold text-gold-light tracking-widest shadow-md">
               {siteConfig.name.toUpperCase()}
             </span>
             <span className="text-white/30 hidden sm:inline">•</span>
-            <span className="text-slate-300 tracking-wide font-medium italic">
+            <span className="text-slate-200 tracking-wide font-medium italic text-sm sm:text-base">
               &ldquo;{siteConfig.tagline}&rdquo;
             </span>
           </div>
-        </motion.div>
 
-        {/* Typed Subtitle */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="h-6 flex items-center justify-center font-mono text-xs sm:text-base text-slate-300 tracking-wider mb-3"
-        >
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light to-gold font-bold">
-            {fullSubline.slice(0, typedIndex)}
-          </span>
-          <span className="inline-block w-2 h-4 bg-gold ml-1.5 animate-pulse" />
+          {/* Typed Subtitle with Blinking Gold Cursor */}
+          <div className="h-6 flex items-center justify-center font-mono text-xs sm:text-sm text-slate-300 tracking-widest mt-2 uppercase">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-white font-bold">
+              {fullSubline.slice(0, typedIndex)}
+            </span>
+            <span className="inline-block w-2 h-4 bg-gold ml-1.5 animate-pulse" />
+          </div>
         </motion.div>
 
         {/* CONTINUOUS LIVE CANDLESTICK STREAM */}

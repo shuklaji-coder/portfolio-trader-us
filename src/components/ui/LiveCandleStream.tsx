@@ -307,32 +307,79 @@ export function LiveCandleStream() {
         const bodyTop = Math.min(openY, closeY);
         const bodyHeight = Math.max(2, Math.abs(closeY - openY));
 
-        // 1. Candlestick Wick
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.5;
+        // 1. Candlestick Wick with Laser Sparks
+        const isGold = (idx % 7 === 0 && isGreen);
+        const wickColor = isGold ? "#F5D061" : isGreen ? "#00E5A0" : "#FF4D5E";
+
+        ctx.strokeStyle = wickColor;
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
         ctx.moveTo(x + candleWidth / 2, highY);
         ctx.lineTo(x + candleWidth / 2, lowY);
         ctx.stroke();
 
-        // 2. Candlestick Body
-        ctx.fillStyle = color;
+        // Laser spark dot at wick high
+        ctx.fillStyle = isGold ? "#FFF7CC" : isGreen ? "#7AFFCE" : "#FFAEB6";
+        ctx.beginPath();
+        ctx.arc(x + candleWidth / 2, highY, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 2. Candlestick Body with Radiant Vertical Gradient
+        let bodyGrad = ctx.createLinearGradient(0, bodyTop, 0, bodyTop + bodyHeight);
+        if (isGold) {
+          bodyGrad.addColorStop(0, "#FFF2A8");
+          bodyGrad.addColorStop(0.4, "#F5D061");
+          bodyGrad.addColorStop(1, "#B38F24");
+        } else if (isGreen) {
+          bodyGrad.addColorStop(0, "#5CFFA8");
+          bodyGrad.addColorStop(0.45, "#00E5A0");
+          bodyGrad.addColorStop(1, "#007A4D");
+        } else {
+          bodyGrad.addColorStop(0, "#FFA3AC");
+          bodyGrad.addColorStop(0.45, "#FF4D5E");
+          bodyGrad.addColorStop(1, "#9E1322");
+        }
+
+        // Body Glow
+        ctx.shadowColor = isGold
+          ? "rgba(245, 208, 97, 0.7)"
+          : isGreen
+          ? "rgba(0, 229, 160, 0.5)"
+          : "rgba(255, 77, 94, 0.5)";
+        ctx.shadowBlur = isGold || idx === candles.length - 1 ? 14 : 7;
+        ctx.fillStyle = bodyGrad;
         ctx.fillRect(x, bodyTop, candleWidth, bodyHeight);
 
-        // Highlight latest candle with neon glow
-        if (idx === candles.length - 1) {
-          ctx.shadowColor = color;
-          ctx.shadowBlur = 10;
-          ctx.fillRect(x, bodyTop, candleWidth, bodyHeight);
-          ctx.shadowBlur = 0;
-        }
+        // Crisp Outer Highlight Border
+        ctx.strokeStyle = isGold ? "#FFF9D4" : isGreen ? "#8AFFE2" : "#FFB8BF";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x, bodyTop, candleWidth, bodyHeight);
+        ctx.shadowBlur = 0;
 
         // 3. Volume Histogram Bar at Bottom
         const volHeight = (candle.volume / (maxVol || 1)) * 55;
         const volY = height - volHeight - 15;
-        ctx.fillStyle = isGreen ? "rgba(0, 229, 160, 0.25)" : "rgba(255, 77, 94, 0.25)";
+        ctx.fillStyle = isGold
+          ? "rgba(245, 208, 97, 0.35)"
+          : isGreen
+          ? "rgba(0, 229, 160, 0.3)"
+          : "rgba(255, 77, 94, 0.3)";
         ctx.fillRect(x, volY, candleWidth, volHeight);
       });
+
+      // 3.5. Glowing Micro-Trend Ribbon Weaving Across Candles
+      if (candles.length > 2) {
+        ctx.strokeStyle = "rgba(245, 208, 97, 0.45)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        candles.forEach((c, i) => {
+          const cx = i * totalCandleSlot + 15 + candleWidth / 2;
+          const cy = priceToY(c.close);
+          if (i === 0) ctx.moveTo(cx, cy);
+          else ctx.lineTo(cx, cy);
+        });
+        ctx.stroke();
+      }
 
       // 4. Active Paper Trade Position Line (If Trade is Active)
       if (activeTrade) {
@@ -424,7 +471,7 @@ export function LiveCandleStream() {
       if (containerRef.current && canvasRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
         canvasRef.current.width = rect.width;
-        canvasRef.current.height = window.innerWidth < 640 ? 280 : 360;
+        canvasRef.current.height = window.innerWidth < 640 ? 320 : 440;
       }
     };
 
@@ -468,7 +515,7 @@ export function LiveCandleStream() {
   const isProfit = activePnlUSD >= 0;
 
   return (
-    <div className="w-full max-w-5xl mx-auto my-6 rounded-2xl border border-white/15 bg-[#070B11]/90 backdrop-blur-2xl shadow-2xl overflow-hidden select-none">
+    <div className="w-full max-w-7xl mx-auto my-6 rounded-3xl border border-gold/30 bg-[#06090e]/95 backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden select-none">
       {/* Top Terminal Bar */}
       <div className="flex flex-wrap items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-surface/80 gap-3">
         {/* Left: Mode Toggle & Feed Badge */}
