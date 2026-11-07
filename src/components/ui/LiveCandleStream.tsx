@@ -308,7 +308,7 @@ export function LiveCandleStream() {
       if (containerRef.current && canvasRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
         canvasRef.current.width = rect.width;
-        canvasRef.current.height = 340;
+        canvasRef.current.height = window.innerWidth < 640 ? 280 : 360;
       }
     };
 
@@ -441,7 +441,7 @@ export function LiveCandleStream() {
       </div>
 
       {/* Candlestick Canvas Viewport */}
-      <div ref={containerRef} className="relative w-full h-[340px] cursor-crosshair">
+      <div ref={containerRef} className="relative w-full h-[280px] sm:h-[360px] cursor-crosshair">
         <canvas
           ref={canvasRef}
           onMouseMove={handleMouseMove}
@@ -484,3 +484,4 @@ export function LiveCandleStream() {
     </div>
   );
 }
+
