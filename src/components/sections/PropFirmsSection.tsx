@@ -53,13 +53,13 @@ export function PropFirmsSection() {
     <section id="partners" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-16">
-        <div className="inline-flex items-center space-x-2 rounded-full border border-white/10 bg-surface/70 px-3.5 py-1 text-xs font-mono text-profit mb-4">
-          <ShieldCheck className="h-3.5 w-3.5" />
+        <div className="inline-flex items-center space-x-2 rounded-full border border-gold/30 bg-surface/70 px-3.5 py-1 text-xs font-mono text-gold-light mb-4">
+          <ShieldCheck className="h-3.5 w-3.5 text-gold" />
           <span>FIRM CAPITAL // PROP TRADING PARTNERS</span>
         </div>
         <h2 className="font-heading text-3xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl">
           Scale Capital With <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-profit via-teal-300 to-cyan-accent">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-yellow-200">
             Institutional Prop Firms.
           </span>
         </h2>

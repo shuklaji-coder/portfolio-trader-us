@@ -119,10 +119,10 @@ export function FooterSection() {
           {/* Time & Session Clock (EST) */}
           <div className="md:col-span-5 flex md:justify-end items-center space-x-4">
             <div className="rounded-xl bg-black/50 border border-white/10 px-4 py-2 text-right">
-              <span className="text-[9px] font-mono uppercase text-slate-400 block">
+              <span className="text-[9px] font-mono uppercase text-gold-light/60 block">
                 NEW YORK (EST) CLOCK
               </span>
-              <span className="font-mono text-base font-bold text-profit">
+              <span className="font-mono text-base font-bold text-gold-light">
                 {currentTimeEST || "09:30:00"} EST
               </span>
             </div>
@@ -132,7 +132,7 @@ export function FooterSection() {
                 soundManager.playClick();
                 scrollTo("#hero");
               }}
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface border border-white/10 text-slate-300 hover:text-white hover:border-profit/50 transition-colors shadow-lg"
+              className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface border border-gold/30 text-slate-300 hover:text-gold-light hover:border-gold transition-colors shadow-lg"
               title="Back to Top"
             >
               <ArrowUp className="h-5 w-5" />
@@ -140,15 +140,15 @@ export function FooterSection() {
           </div>
         </div>
 
-        {/* Big Wordmark Scroll Reveal */}
+        {/* Big Wordmark Scroll Reveal in Monaco Gold */}
         <div className="py-16 text-center select-none overflow-hidden">
           <motion.div
             initial={{ opacity: 0.1, y: 30 }}
-            whileInView={{ opacity: 0.45, y: 0 }}
+            whileInView={{ opacity: 0.5, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="font-heading text-6xl sm:text-8xl md:text-9xl lg:text-[140px] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white/30 via-white/10 to-transparent leading-none">
+            <h1 className="font-heading text-6xl sm:text-8xl md:text-9xl lg:text-[140px] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-gold/50 via-gold/15 to-transparent leading-none">
               WAYTRADES
             </h1>
           </motion.div>

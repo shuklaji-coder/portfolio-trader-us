@@ -83,12 +83,13 @@ export const siteConfig = {
   },
 
   colors: {
-    background: "#05070A",
+    background: "#040609",
     profit: "#00E5A0",
     loss: "#FF4D5E",
-    cyan: "#00D2FF",
-    cardBg: "rgba(11, 15, 23, 0.75)",
-    border: "rgba(255, 255, 255, 0.08)",
+    gold: "#D4AF37",
+    cyan: "#D4AF37",
+    cardBg: "rgba(13, 17, 24, 0.8)",
+    border: "rgba(212, 175, 55, 0.12)",
   },
 
   stats: [

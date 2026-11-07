@@ -28,8 +28,8 @@ export function HeroSection() {
       id="hero"
       className="relative min-h-screen flex flex-col justify-between pt-24 sm:pt-28 pb-0 overflow-hidden"
     >
-      {/* Background Volumetric Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[450px] w-[750px] rounded-full bg-gradient-to-b from-profit/10 via-cyan-accent/5 to-transparent blur-[140px] pointer-events-none -z-10" />
+      {/* Background Volumetric Gold Glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[450px] w-[750px] rounded-full bg-gradient-to-b from-gold/15 via-gold-light/5 to-transparent blur-[140px] pointer-events-none -z-10" />
 
       {/* Main Hero Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto text-center flex flex-col items-center justify-center z-10">
@@ -38,14 +38,14 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center space-x-2 rounded-full border border-white/10 bg-surface/80 px-4 py-1.5 backdrop-blur-xl mb-3 shadow-lg"
+          className="inline-flex items-center space-x-2 rounded-full border border-gold/30 bg-surface/85 px-4 py-1.5 backdrop-blur-xl mb-3 shadow-lg"
         >
-          <span className="h-2 w-2 rounded-full bg-profit animate-pulse" />
-          <span className="text-xs font-mono tracking-widest text-slate-300 uppercase">
+          <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
+          <span className="text-xs font-mono tracking-widest text-slate-200 uppercase">
             {siteConfig.legalName} • {siteConfig.name.toUpperCase()}
           </span>
           <span className="text-white/20">|</span>
-          <span className="text-xs font-mono text-profit">FUTURES SPECIALIST</span>
+          <span className="text-xs font-mono text-gold-light font-bold">FUTURES SPECIALIST</span>
         </motion.div>
 
         {/* Typed Subtitle */}
@@ -55,10 +55,10 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="h-7 flex items-center justify-center font-mono text-sm sm:text-lg text-slate-300 tracking-wider mb-4"
         >
-          <span className="text-cyan-accent font-semibold">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-[#F5D061] font-bold">
             {fullSubline.slice(0, typedIndex)}
           </span>
-          <span className="inline-block w-2 h-4 bg-profit ml-1.5 animate-pulse" />
+          <span className="inline-block w-2 h-4 bg-gold ml-1.5 animate-pulse" />
         </motion.div>
 
         {/* CONTINUOUS LIVE CANDLESTICK STREAM (Replaces the big text right here!) */}

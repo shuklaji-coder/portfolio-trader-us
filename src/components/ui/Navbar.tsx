@@ -78,16 +78,16 @@ export function Navbar() {
           onClick={(e) => handleNavClick(e, "#hero")}
           className="flex items-center space-x-3 group cursor-pointer"
         >
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-surface border border-white/10 group-hover:border-profit/50 transition-colors">
-            {/* Minimal glowing candlestick glyph */}
-            <div className="h-4 w-[2px] bg-profit rounded-full" />
-            <div className="absolute h-2.5 w-1.5 bg-profit rounded-[1px] shadow-[0_0_8px_#00E5A0]" />
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-surface border border-gold/30 group-hover:border-gold transition-colors">
+            {/* Minimal glowing candlestick glyph in Monaco Gold */}
+            <div className="h-4 w-[2px] bg-gold rounded-full" />
+            <div className="absolute h-2.5 w-1.5 bg-gradient-to-b from-gold-light to-gold rounded-[1px] shadow-[0_0_10px_#D4AF37]" />
           </div>
           <div className="flex flex-col">
-            <span className="font-heading font-bold text-base tracking-wider text-white group-hover:text-profit transition-colors">
+            <span className="font-heading font-bold text-base tracking-wider text-white group-hover:text-gold-light transition-colors">
               {siteConfig.name.toUpperCase()}
             </span>
-            <span className="text-[10px] font-mono text-slate-400 tracking-tight leading-none">
+            <span className="text-[10px] font-mono text-gold-light/70 tracking-tight leading-none">
               FUTURES • ES • NQ
             </span>
           </div>
@@ -105,12 +105,12 @@ export function Navbar() {
                 onMouseEnter={() => soundManager.playHover()}
                 className={`relative px-3.5 py-1 text-xs font-medium tracking-wide transition-colors duration-200 rounded-full ${
                   isActive
-                    ? "text-white"
+                    ? "text-gold-light font-semibold"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
                 {isActive && (
-                  <span className="absolute inset-0 rounded-full bg-white/10 border border-white/15 -z-10 shadow-sm" />
+                  <span className="absolute inset-0 rounded-full bg-gold/15 border border-gold/30 -z-10 shadow-sm" />
                 )}
                 {item.label}
               </a>
@@ -121,8 +121,8 @@ export function Navbar() {
         {/* Right Action Controls: Market Status + Audio Toggle + Discord CTA */}
         <div className="hidden lg:flex items-center space-x-4">
           {/* Live Market Session Pill */}
-          <div className="flex items-center space-x-2 rounded-full border border-profit/20 bg-profit/5 px-3 py-1 text-[11px] font-mono text-profit">
-            <span className="h-1.5 w-1.5 rounded-full bg-profit animate-pulse" />
+          <div className="flex items-center space-x-2 rounded-full border border-gold/30 bg-gold/5 px-3 py-1 text-[11px] font-mono text-gold-light">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
             <span className="tracking-wider">CME GLOBEX • 23H</span>
           </div>
 
@@ -130,22 +130,22 @@ export function Navbar() {
           <button
             onClick={toggleAudio}
             title={audioEnabled ? "Mute Terminal Audio" : "Enable Terminal Audio (Oscillators)"}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-surface/80 text-slate-400 hover:text-white hover:border-white/20 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-surface/80 text-slate-400 hover:text-white hover:border-gold/40 transition-colors"
           >
             {audioEnabled ? (
-              <Volume2 className="h-4 w-4 text-profit" />
+              <Volume2 className="h-4 w-4 text-gold" />
             ) : (
               <VolumeX className="h-4 w-4" />
             )}
           </button>
 
-          {/* Quick Discord CTA */}
+          {/* Quick Discord CTA in Monaco Gold */}
           <a
             href={siteConfig.community.discordUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => soundManager.playClick()}
-            className="group flex items-center space-x-1.5 rounded-lg border border-profit/40 bg-profit/10 px-3.5 py-1.5 text-xs font-semibold text-profit hover:bg-profit hover:text-[#05070A] transition-all duration-300 shadow-[0_0_15px_rgba(0,229,160,0.15)]"
+            className="group flex items-center space-x-1.5 rounded-lg border border-gold/50 bg-gold/10 px-3.5 py-1.5 text-xs font-semibold text-gold-light hover:bg-gold hover:text-[#040609] transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
           >
             <span>Discord</span>
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

@@ -20,13 +20,13 @@ export function TravelSection() {
     <section id="travel" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-12">
-        <div className="inline-flex items-center space-x-2 rounded-full border border-white/10 bg-surface/70 px-3.5 py-1 text-xs font-mono text-cyan-accent mb-4">
-          <Plane className="h-3.5 w-3.5" />
+        <div className="inline-flex items-center space-x-2 rounded-full border border-gold/30 bg-surface/70 px-3.5 py-1 text-xs font-mono text-gold-light mb-4">
+          <Plane className="h-3.5 w-3.5 text-gold" />
           <span>NOMAD EXPEDITIONS // 24+ COUNTRIES</span>
         </div>
         <h2 className="font-heading text-3xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl">
           Trading From Everywhere. <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-accent via-teal-300 to-profit">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-yellow-200">
             One Laptop. Infinite Horizons.
           </span>
         </h2>

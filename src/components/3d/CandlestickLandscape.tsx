@@ -26,7 +26,7 @@ export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscap
     const data = [];
     const profitColor = new THREE.Color("#00E5A0");
     const lossColor = new THREE.Color("#FF4D5E");
-    const cyanColor = new THREE.Color("#00D2FF");
+    const goldColor = new THREE.Color("#D4AF37");
 
     for (let z = 0; z < countZ; z++) {
       let currentPrice = Math.sin(z * 0.5) * 2;
@@ -49,10 +49,10 @@ export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscap
         const posX = (x - countX / 2) * 0.7;
         const posZ = (z - countZ / 2) * 1.8;
 
-        // Occasional cyan highlight for special key level breakout
+        // Occasional Monaco Gold highlight for special key level breakout
         let color = isUp ? profitColor : lossColor;
-        if (x % 11 === 0 && isUp) {
-          color = cyanColor;
+        if (x % 9 === 0 && isUp) {
+          color = goldColor;
         }
 
         data.push({
@@ -169,12 +169,12 @@ export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscap
 
       {/* Floor Grid reflection plane */}
       <gridHelper
-        args={[60, 40, "#00E5A0", "#002015"]}
+        args={[60, 40, "#D4AF37", "#1A1505"]}
         position={[0, -5, 0]}
         rotation={[0, 0, 0]}
       />
 
-      {/* Floating Ambient Glowing Market Dust Motes */}
+      {/* Floating Ambient Glowing Monaco Gold Dust Motes */}
       <points ref={dustRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -185,10 +185,10 @@ export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscap
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.08}
-          color="#00E5A0"
+          size={0.09}
+          color="#D4AF37"
           transparent
-          opacity={0.4}
+          opacity={0.45}
           sizeAttenuation
         />
       </points>

@@ -70,16 +70,16 @@ export function CustomCursor() {
           style={{ x: smoothX, y: smoothY }}
         >
           {/* Center pinpoint */}
-          <div className="absolute -left-[5px] -top-[5px] h-[10px] w-[10px] rounded-full border border-profit bg-profit/40 backdrop-blur-sm" />
+          <div className="absolute -left-[5px] -top-[5px] h-[10px] w-[10px] rounded-full border border-gold bg-gold/40 backdrop-blur-sm" />
 
           {/* Crosshair Horizontal Line */}
-          <div className="absolute -left-[30px] top-0 h-[1px] w-[60px] bg-gradient-to-r from-transparent via-profit/80 to-transparent" />
+          <div className="absolute -left-[30px] top-0 h-[1px] w-[60px] bg-gradient-to-r from-transparent via-gold/90 to-transparent" />
 
           {/* Crosshair Vertical Line */}
-          <div className="absolute -top-[30px] left-0 h-[60px] w-[1px] bg-gradient-to-b from-transparent via-profit/80 to-transparent" />
+          <div className="absolute -top-[30px] left-0 h-[60px] w-[1px] bg-gradient-to-b from-transparent via-gold/90 to-transparent" />
 
           {/* Small TradingView price coordinate tag */}
-          <div className="absolute left-3 top-3 rounded bg-surface/90 px-1.5 py-0.5 text-[9px] font-mono tracking-wider text-profit border border-profit/30 shadow-lg">
+          <div className="absolute left-3 top-3 rounded bg-[#090D14]/95 px-1.5 py-0.5 text-[9px] font-mono tracking-wider text-gold-light border border-gold/40 shadow-lg">
             {(coords.y * 5.25 + 5000).toFixed(2)}
           </div>
         </motion.div>
@@ -87,13 +87,13 @@ export function CustomCursor() {
         <>
           {/* Standard Dot at direct mouse coords */}
           <motion.div
-            className="fixed left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-profit shadow-[0_0_8px_#00E5A0]"
+            className="fixed left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold shadow-[0_0_10px_#D4AF37]"
             style={{ x: mouseX, y: mouseY }}
           />
 
           {/* Trailing Outer Ring */}
           <motion.div
-            className="fixed left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-profit/40 bg-profit/5"
+            className="fixed left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/40 bg-gold/5"
             style={{
               x: smoothX,
               y: smoothY,
@@ -102,7 +102,7 @@ export function CustomCursor() {
             }}
             animate={{
               scale: isHovered ? 1.4 : 1,
-              borderColor: isHovered ? "rgba(0, 229, 160, 0.8)" : "rgba(0, 229, 160, 0.35)",
+              borderColor: isHovered ? "rgba(212, 175, 55, 0.9)" : "rgba(212, 175, 55, 0.4)",
             }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           />

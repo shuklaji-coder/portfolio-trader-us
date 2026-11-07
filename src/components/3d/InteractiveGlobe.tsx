@@ -96,12 +96,12 @@ export function InteractiveGlobe({
     }).filter(Boolean) as THREE.BufferGeometry[];
   }, [cityPositions, radius]);
 
-  // Three.js Line primitives for great circle arcs
+  // Three.js Line primitives for great circle arcs in Champagne Gold
   const lineObjects = useMemo(() => {
     const mat = new THREE.LineBasicMaterial({
-      color: 0x00e5a0,
+      color: 0xd4af37,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.45,
     });
     return arcs.map((arcGeo) => new THREE.Line(arcGeo, mat));
   }, [arcs]);
@@ -142,13 +142,13 @@ export function InteractiveGlobe({
         <meshBasicMaterial color="#070B12" />
       </mesh>
 
-      {/* Dotted Atmosphere / Landmasses */}
+      {/* Dotted Atmosphere / Landmasses in Monaco Gold */}
       <points geometry={pointsGeo}>
         <pointsMaterial
-          size={0.065}
-          color="#00E5A0"
+          size={0.07}
+          color="#D4AF37"
           transparent
-          opacity={0.45}
+          opacity={0.55}
           sizeAttenuation
         />
       </points>
@@ -158,9 +158,9 @@ export function InteractiveGlobe({
         <sphereGeometry args={[radius, 18, 12]} />
         <meshBasicMaterial
           wireframe
-          color="#00D2FF"
+          color="#D4AF37"
           transparent
-          opacity={0.08}
+          opacity={0.12}
         />
       </mesh>
 
@@ -193,7 +193,7 @@ export function InteractiveGlobe({
             >
               <sphereGeometry args={[isActive ? 0.12 : 0.08, 16, 16]} />
               <meshBasicMaterial
-                color={isActive ? "#00FFAF" : isHovered ? "#00D2FF" : "#00E5A0"}
+                color={isActive ? "#F5D061" : isHovered ? "#FFFFFF" : "#D4AF37"}
               />
             </mesh>
 
@@ -202,10 +202,10 @@ export function InteractiveGlobe({
               <mesh rotation={[Math.PI / 2, 0, 0]}>
                 <ringGeometry args={[0.16, 0.22, 24]} />
                 <meshBasicMaterial
-                  color="#00E5A0"
+                  color="#D4AF37"
                   side={THREE.DoubleSide}
                   transparent
-                  opacity={0.7}
+                  opacity={0.8}
                 />
               </mesh>
             )}
@@ -224,7 +224,7 @@ export function InteractiveGlobe({
               <div
                 className={`rounded-md px-2 py-0.5 text-[10px] font-mono tracking-wider font-semibold transition-all duration-300 ${
                   isActive
-                    ? "bg-profit text-[#05070A] shadow-[0_0_12px_#00E5A0] scale-110"
+                    ? "bg-gradient-to-r from-gold to-gold-light text-[#040609] shadow-[0_0_15px_#D4AF37] scale-110 font-bold"
                     : "bg-surface/90 text-slate-300 border border-white/10"
                 }`}
               >
@@ -239,9 +239,9 @@ export function InteractiveGlobe({
       <mesh scale={[1.18, 1.18, 1.18]}>
         <sphereGeometry args={[radius, 32, 32]} />
         <meshBasicMaterial
-          color="#00E5A0"
+          color="#D4AF37"
           transparent
-          opacity={0.03}
+          opacity={0.05}
           side={THREE.BackSide}
         />
       </mesh>

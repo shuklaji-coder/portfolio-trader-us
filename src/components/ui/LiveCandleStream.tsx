@@ -2,7 +2,23 @@
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { soundManager } from "@/lib/sound";
-import { Play, Pause, RefreshCw, Zap, TrendingUp, TrendingDown, Eye, Activity } from "lucide-react";
+import confetti from "canvas-confetti";
+import { TradingViewWidget } from "@/components/ui/TradingViewWidget";
+import {
+  Play,
+  Pause,
+  RefreshCw,
+  Zap,
+  TrendingUp,
+  TrendingDown,
+  Eye,
+  Activity,
+  DollarSign,
+  ArrowUpCircle,
+  ArrowDownCircle,
+  XCircle,
+  Radio,
+} from "lucide-react";
 
 interface Candle {
   open: number;
@@ -14,11 +30,19 @@ interface Candle {
   time: string;
 }
 
+interface ActiveTrade {
+  type: "LONG" | "SHORT";
+  entryPrice: number;
+  entryTime: string;
+  contracts: number;
+}
+
 export function LiveCandleStream() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // States
+  // Mode: Custom Continuous Simulator vs Official Real-Time TradingView Chart
+  const [chartMode, setChartMode] = useState<"simulator" | "tradingview">("simulator");
   const [instrument, setInstrument] = useState<"ES" | "NQ">("ES");
   const [isPlaying, setIsPlaying] = useState(true);
   const [speed, setSpeed] = useState<number>(1);
@@ -29,8 +53,13 @@ export function LiveCandleStream() {
   const [hoveredCandle, setHoveredCandle] = useState<Candle | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
 
+  // Paper Trading Simulator State
+  const [activeTrade, setActiveTrade] = useState<ActiveTrade | null>(null);
+  const [tradeMessage, setTradeMessage] = useState<string | null>(null);
+
   const basePrice = instrument === "ES" ? 5880 : 20640;
   const tickSize = instrument === "ES" ? 0.25 : 0.5;
+  const pointValue = instrument === "ES" ? 50 : 20;
 
   // Initialize historical candles
   const initCandles = useCallback(() => {
@@ -67,6 +96,8 @@ export function LiveCandleStream() {
 
     setCandles(initial);
     setCurrentPrice(initial[initial.length - 1].close);
+    setActiveTrade(null);
+    setTradeMessage(null);
   }, [basePrice, instrument]);
 
   useEffect(() => {
@@ -75,7 +106,7 @@ export function LiveCandleStream() {
 
   // Live Continuous Ticking & New Candle Generation Loop
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || chartMode !== "simulator") return;
 
     let subTickCount = 0;
     const tickIntervalMs = Math.max(80, 200 / speed);
@@ -135,10 +166,62 @@ export function LiveCandleStream() {
     }, tickIntervalMs);
 
     return () => clearInterval(interval);
-  }, [isPlaying, speed, tickSize]);
+  }, [isPlaying, speed, tickSize, chartMode]);
+
+  // Paper Trade Action Handlers
+  const handleOpenTrade = (type: "LONG" | "SHORT") => {
+    soundManager.playClick();
+    setActiveTrade({
+      type,
+      entryPrice: currentPrice,
+      entryTime: new Date().toLocaleTimeString(),
+      contracts: 2,
+    });
+    setTradeMessage(`EXECUTED ${type} 2x @ ${currentPrice.toFixed(2)}`);
+    setTimeout(() => setTradeMessage(null), 3000);
+  };
+
+  const handleCloseTrade = (e: React.MouseEvent) => {
+    if (!activeTrade) return;
+
+    const pointsDelta =
+      activeTrade.type === "LONG"
+        ? currentPrice - activeTrade.entryPrice
+        : activeTrade.entryPrice - currentPrice;
+
+    const pnlUSD = pointsDelta * pointValue * activeTrade.contracts;
+
+    if (pnlUSD > 0) {
+      soundManager.playSuccess();
+      try {
+        const rect = (e.target as HTMLElement).getBoundingClientRect();
+        confetti({
+          particleCount: 35,
+          spread: 60,
+          origin: {
+            x: (rect.left + rect.width / 2) / window.innerWidth,
+            y: (rect.top + rect.height / 2) / window.innerHeight,
+          },
+          colors: ["#00E5A0", "#00FFAF", "#FFFFFF"],
+          disableForReducedMotion: true,
+        });
+      } catch {
+        // ignore
+      }
+      setTradeMessage(`TARGET HIT! +$${pnlUSD.toFixed(2)} (+${pointsDelta.toFixed(2)} pts)`);
+    } else {
+      soundManager.playClick();
+      setTradeMessage(`CLOSED: -$${Math.abs(pnlUSD).toFixed(2)} (${pointsDelta.toFixed(2)} pts)`);
+    }
+
+    setActiveTrade(null);
+    setTimeout(() => setTradeMessage(null), 4000);
+  };
 
   // Canvas 60fps Chart Rendering Loop
   useEffect(() => {
+    if (chartMode !== "simulator") return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -172,6 +255,12 @@ export function LiveCandleStream() {
         if (c.high > maxPrice) maxPrice = c.high;
         if (c.volume > maxVol) maxVol = c.volume;
       });
+
+      // Factor in active trade entry price so it is never clipped
+      if (activeTrade) {
+        if (activeTrade.entryPrice < minPrice) minPrice = activeTrade.entryPrice - 2;
+        if (activeTrade.entryPrice > maxPrice) maxPrice = activeTrade.entryPrice + 2;
+      }
 
       const paddingY = 40;
       const priceRange = maxPrice - minPrice || 1;
@@ -245,7 +334,34 @@ export function LiveCandleStream() {
         ctx.fillRect(x, volY, candleWidth, volHeight);
       });
 
-      // 4. Live Current Price Horizontal Dotted Line & Flashing Badge
+      // 4. Active Paper Trade Position Line (If Trade is Active)
+      if (activeTrade) {
+        const tradeY = priceToY(activeTrade.entryPrice);
+        const isLong = activeTrade.type === "LONG";
+        const tradeColor = isLong ? "#00D2FF" : "#F59E0B";
+
+        ctx.setLineDash([6, 3]);
+        ctx.strokeStyle = tradeColor;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, tradeY);
+        ctx.lineTo(width - 65, tradeY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Active Trade Label
+        ctx.fillStyle = tradeColor;
+        ctx.fillRect(15, tradeY - 18, 140, 16);
+        ctx.fillStyle = "#05070A";
+        ctx.font = "bold 9px JetBrains Mono, monospace";
+        ctx.fillText(
+          `${activeTrade.type} 2x @ ${activeTrade.entryPrice.toFixed(2)}`,
+          20,
+          tradeY - 6
+        );
+      }
+
+      // 5. Live Current Price Horizontal Dotted Line & Flashing Badge
       const latest = candles[candles.length - 1];
       if (latest) {
         const liveY = priceToY(latest.close);
@@ -268,12 +384,10 @@ export function LiveCandleStream() {
         ctx.fillText(latest.close.toFixed(2), width - 60, liveY + 3.5);
       }
 
-      // 5. Interactive Crosshair & Tooltip on Hover
+      // 6. Interactive Crosshair & Tooltip on Hover
       if (mousePos && mousePos.x < width - 70) {
         const hoverIdx = Math.floor((mousePos.x - 15) / totalCandleSlot);
         if (hoverIdx >= 0 && hoverIdx < candles.length) {
-          const c = candles[hoverIdx];
-
           // Crosshair lines
           ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
           ctx.lineWidth = 1;
@@ -300,10 +414,12 @@ export function LiveCandleStream() {
     render();
 
     return () => cancelAnimationFrame(animationId);
-  }, [candles, mousePos]);
+  }, [candles, mousePos, activeTrade, chartMode]);
 
   // Handle Resize
   useEffect(() => {
+    if (chartMode !== "simulator") return;
+
     const handleResize = () => {
       if (containerRef.current && canvasRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
@@ -315,7 +431,7 @@ export function LiveCandleStream() {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [chartMode]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current) return;
@@ -338,16 +454,55 @@ export function LiveCandleStream() {
     setHoveredCandle(null);
   };
 
+  // Live P&L Calculation if Trade is Active
+  const activePointsDelta = activeTrade
+    ? activeTrade.type === "LONG"
+      ? currentPrice - activeTrade.entryPrice
+      : activeTrade.entryPrice - currentPrice
+    : 0;
+
+  const activePnlUSD = activeTrade
+    ? activePointsDelta * pointValue * activeTrade.contracts
+    : 0;
+
+  const isProfit = activePnlUSD >= 0;
+
   return (
-    <div className="w-full max-w-5xl mx-auto my-8 rounded-2xl border border-white/15 bg-[#070B11]/90 backdrop-blur-2xl shadow-2xl overflow-hidden select-none">
+    <div className="w-full max-w-5xl mx-auto my-6 rounded-2xl border border-white/15 bg-[#070B11]/90 backdrop-blur-2xl shadow-2xl overflow-hidden select-none">
       {/* Top Terminal Bar */}
-      <div className="flex flex-wrap items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-surface/80">
+      <div className="flex flex-wrap items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-surface/80 gap-3">
+        {/* Left: Mode Toggle & Feed Badge */}
         <div className="flex items-center space-x-3">
-          {/* Live pulsing dot */}
-          <span className="flex items-center space-x-1.5 text-xs font-mono font-semibold text-profit">
-            <span className="h-2 w-2 rounded-full bg-profit animate-ping" />
-            <span className="tracking-wider">LIVE CONTINUOUS CME FEED</span>
-          </span>
+          {/* Real vs Sim Mode Switch */}
+          <div className="flex items-center rounded-lg bg-black/50 border border-white/10 p-0.5">
+            <button
+              onClick={() => {
+                setChartMode("simulator");
+                soundManager.playClick();
+              }}
+              className={`px-3 py-1 rounded-md text-xs font-mono font-bold transition-colors ${
+                chartMode === "simulator"
+                  ? "bg-profit text-[#05070A] shadow-sm"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              SIMULATOR (60 FPS)
+            </button>
+            <button
+              onClick={() => {
+                setChartMode("tradingview");
+                soundManager.playClick();
+              }}
+              className={`px-3 py-1 rounded-md text-xs font-mono font-bold transition-colors flex items-center space-x-1 ${
+                chartMode === "tradingview"
+                  ? "bg-cyan-accent text-[#05070A] shadow-sm"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Radio className="h-3 w-3 mr-1 inline animate-pulse text-red-500" />
+              <span>TRADINGVIEW (REAL DATA)</span>
+            </button>
+          </div>
 
           {/* Instrument Toggle: ES vs NQ */}
           <div className="flex items-center rounded-lg bg-black/40 border border-white/10 p-0.5">
@@ -356,132 +511,204 @@ export function LiveCandleStream() {
                 setInstrument("ES");
                 soundManager.playClick();
               }}
-              className={`px-3 py-1 rounded-md text-xs font-mono font-bold transition-colors ${
-                instrument === "ES"
-                  ? "bg-profit text-[#05070A] shadow-sm"
-                  : "text-slate-400 hover:text-white"
+              className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold transition-colors ${
+                instrument === "ES" ? "bg-white/15 text-white" : "text-slate-400 hover:text-white"
               }`}
             >
-              ES (S&P 500)
+              ES
             </button>
             <button
               onClick={() => {
                 setInstrument("NQ");
                 soundManager.playClick();
               }}
-              className={`px-3 py-1 rounded-md text-xs font-mono font-bold transition-colors ${
-                instrument === "NQ"
-                  ? "bg-cyan-accent text-[#05070A] shadow-sm"
-                  : "text-slate-400 hover:text-white"
+              className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold transition-colors ${
+                instrument === "NQ" ? "bg-white/15 text-white" : "text-slate-400 hover:text-white"
               }`}
             >
-              NQ (Nasdaq 100)
+              NQ
             </button>
           </div>
         </div>
 
-        {/* Live Price Readout */}
-        <div className="flex items-center space-x-4 my-1 sm:my-0">
-          <div className="flex items-baseline space-x-2">
-            <span className="text-xs font-mono text-slate-400">{instrument} GLOBEX:</span>
-            <span
-              className={`font-mono text-lg font-bold tracking-tight transition-colors ${
-                lastTickDir === "up" ? "text-profit" : "text-loss"
-              }`}
-            >
-              {currentPrice.toFixed(2)}
-            </span>
-            <span
-              className={`text-xs font-mono flex items-center ${
-                priceChange >= 0 ? "text-profit" : "text-loss"
-              }`}
-            >
-              {priceChange >= 0 ? (
-                <TrendingUp className="h-3 w-3 mr-0.5 inline" />
+        {/* Right: Live Price & Controls */}
+        <div className="flex items-center space-x-3">
+          {chartMode === "simulator" && (
+            <div className="flex items-baseline space-x-2">
+              <span className="text-xs font-mono text-slate-400">{instrument} LAST:</span>
+              <span
+                className={`font-mono text-base sm:text-lg font-bold tracking-tight transition-colors ${
+                  lastTickDir === "up" ? "text-profit" : "text-loss"
+                }`}
+              >
+                {currentPrice.toFixed(2)}
+              </span>
+              <span
+                className={`text-xs font-mono hidden sm:flex items-center ${
+                  priceChange >= 0 ? "text-profit" : "text-loss"
+                }`}
+              >
+                {priceChange >= 0 ? (
+                  <TrendingUp className="h-3 w-3 mr-0.5 inline" />
+                ) : (
+                  <TrendingDown className="h-3 w-3 mr-0.5 inline" />
+                )}
+                {priceChange >= 0 ? `+${priceChange}` : priceChange}
+              </span>
+            </div>
+          )}
+
+          {chartMode === "simulator" && (
+            <div className="flex items-center space-x-1 border-l border-white/10 pl-3">
+              <button
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="p-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
+                title={isPlaying ? "Pause Stream" : "Resume Stream"}
+              >
+                {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 text-profit" />}
+              </button>
+
+              <button
+                onClick={() => {
+                  setSpeed((s) => (s === 1 ? 2 : s === 2 ? 3 : 1));
+                  soundManager.playClick();
+                }}
+                className="px-2 py-1 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-[11px] font-mono text-slate-300 hover:text-white transition-colors"
+                title="Change Stream Speed"
+              >
+                {speed}x
+              </button>
+
+              <button
+                onClick={() => {
+                  initCandles();
+                  soundManager.playClick();
+                }}
+                className="p-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
+                title="Reset Candlesticks"
+              >
+                <RefreshCw className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Main Chart Area */}
+      {chartMode === "simulator" ? (
+        <>
+          {/* Candlestick Canvas Viewport */}
+          <div ref={containerRef} className="relative w-full h-[280px] sm:h-[360px] cursor-crosshair">
+            <canvas
+              ref={canvasRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="w-full h-full block"
+            />
+
+            {/* Hovered Candle HUD Info Overlay */}
+            {hoveredCandle ? (
+              <div className="absolute top-3 left-4 rounded-xl bg-surface/90 border border-white/15 px-3 py-1.5 backdrop-blur-md flex items-center space-x-3 text-[11px] font-mono pointer-events-none shadow-xl">
+                <span className="text-slate-400">TIME: {hoveredCandle.time}</span>
+                <span className="text-slate-400">
+                  O: <b className="text-white">{hoveredCandle.open.toFixed(2)}</b>
+                </span>
+                <span className="text-slate-400">
+                  H: <b className="text-profit">{hoveredCandle.high.toFixed(2)}</b>
+                </span>
+                <span className="text-slate-400">
+                  L: <b className="text-loss">{hoveredCandle.low.toFixed(2)}</b>
+                </span>
+                <span className="text-slate-400">
+                  C: <b className={hoveredCandle.isUp ? "text-profit" : "text-loss"}>{hoveredCandle.close.toFixed(2)}</b>
+                </span>
+                <span className="text-slate-400">
+                  VOL: <b className="text-cyan-accent">{hoveredCandle.volume}</b>
+                </span>
+              </div>
+            ) : (
+              <div className="absolute top-3 left-4 flex items-center space-x-2 text-[10px] font-mono text-slate-500 pointer-events-none">
+                <Eye className="h-3.5 w-3.5 text-profit" />
+                <span>HOVER ANY CANDLE TO INSPECT OHLC DATA</span>
+              </div>
+            )}
+
+            {/* Volume Label */}
+            <div className="absolute bottom-3 left-4 text-[9px] font-mono uppercase text-slate-500 pointer-events-none">
+              VOLUME HISTOGRAM // CME DEPTH OF MARKET (DOM)
+            </div>
+          </div>
+
+          {/* Interactive Paper Trading Action Deck */}
+          <div className="px-4 sm:px-6 py-3 border-t border-white/10 bg-[#0A0E17] flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center space-x-2 text-xs font-mono">
+              <span className="text-slate-400">PAPER TRADING DEMO:</span>
+              {activeTrade ? (
+                <div
+                  className={`flex items-center space-x-2 rounded-lg px-3 py-1 font-mono font-bold ${
+                    isProfit
+                      ? "bg-profit/15 text-profit border border-profit/30"
+                      : "bg-loss/15 text-loss border border-loss/30"
+                  }`}
+                >
+                  <span className="h-2 w-2 rounded-full animate-ping bg-current" />
+                  <span>
+                    {activeTrade.type} 2x @ {activeTrade.entryPrice.toFixed(2)} | P&L:{" "}
+                    {isProfit ? `+$${activePnlUSD.toFixed(2)}` : `-$${Math.abs(activePnlUSD).toFixed(2)}`}{" "}
+                    ({activePointsDelta > 0 ? `+${activePointsDelta.toFixed(2)}` : activePointsDelta.toFixed(2)} pts)
+                  </span>
+                </div>
               ) : (
-                <TrendingDown className="h-3 w-3 mr-0.5 inline" />
+                <span className="text-slate-500">Test trade live market volatility</span>
               )}
-              {priceChange >= 0 ? `+${priceChange}` : priceChange}
-            </span>
+            </div>
+
+            {/* Trading Buttons */}
+            <div className="flex items-center space-x-2">
+              {tradeMessage && (
+                <span className="text-xs font-mono font-semibold text-profit animate-pulse mr-2">
+                  {tradeMessage}
+                </span>
+              )}
+
+              {activeTrade ? (
+                <button
+                  onClick={handleCloseTrade}
+                  className="flex items-center space-x-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-1.5 text-xs font-mono font-bold text-white transition-all shadow-lg"
+                >
+                  <XCircle className="h-4 w-4 text-loss" />
+                  <span>CLOSE POSITION</span>
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => handleOpenTrade("LONG")}
+                    className="flex items-center space-x-1 rounded-lg bg-profit hover:bg-[#00FFAF] px-4 py-1.5 text-xs font-mono font-bold text-[#05070A] transition-all shadow-[0_0_15px_rgba(0,229,160,0.3)]"
+                  >
+                    <ArrowUpCircle className="h-4 w-4" />
+                    <span>BUY / LONG</span>
+                  </button>
+                  <button
+                    onClick={() => handleOpenTrade("SHORT")}
+                    className="flex items-center space-x-1 rounded-lg bg-loss hover:bg-[#FF6B7A] px-4 py-1.5 text-xs font-mono font-bold text-white transition-all shadow-[0_0_15px_rgba(255,77,94,0.3)]"
+                  >
+                    <ArrowDownCircle className="h-4 w-4" />
+                    <span>SELL / SHORT</span>
+                  </button>
+                </>
+              )}
+            </div>
           </div>
-
-          {/* Speed & Pause Controls */}
-          <div className="flex items-center space-x-1 border-l border-white/10 pl-3">
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="p-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
-              title={isPlaying ? "Pause Stream" : "Resume Stream"}
-            >
-              {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 text-profit" />}
-            </button>
-
-            <button
-              onClick={() => {
-                setSpeed((s) => (s === 1 ? 2 : s === 2 ? 3 : 1));
-                soundManager.playClick();
-              }}
-              className="px-2 py-1 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-[11px] font-mono text-slate-300 hover:text-white transition-colors"
-              title="Change Stream Speed"
-            >
-              {speed}x
-            </button>
-
-            <button
-              onClick={() => {
-                initCandles();
-                soundManager.playClick();
-              }}
-              className="p-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
-              title="Reset Candlesticks"
-            >
-              <RefreshCw className="h-3.5 w-3.5" />
-            </button>
-          </div>
+        </>
+      ) : (
+        /* Official Real-Time TradingView Live Chart */
+        <div className="w-full h-[420px] p-2 bg-[#070B11]">
+          <TradingViewWidget
+            symbol={instrument === "ES" ? "CME_MINI:ES1!" : "CME_MINI:NQ1!"}
+            height={400}
+          />
         </div>
-      </div>
-
-      {/* Candlestick Canvas Viewport */}
-      <div ref={containerRef} className="relative w-full h-[280px] sm:h-[360px] cursor-crosshair">
-        <canvas
-          ref={canvasRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="w-full h-full block"
-        />
-
-        {/* Hovered Candle HUD Info Overlay */}
-        {hoveredCandle ? (
-          <div className="absolute top-3 left-4 rounded-xl bg-surface/90 border border-white/15 px-3 py-1.5 backdrop-blur-md flex items-center space-x-3 text-[11px] font-mono pointer-events-none shadow-xl">
-            <span className="text-slate-400">TIME: {hoveredCandle.time}</span>
-            <span className="text-slate-400">
-              O: <b className="text-white">{hoveredCandle.open.toFixed(2)}</b>
-            </span>
-            <span className="text-slate-400">
-              H: <b className="text-profit">{hoveredCandle.high.toFixed(2)}</b>
-            </span>
-            <span className="text-slate-400">
-              L: <b className="text-loss">{hoveredCandle.low.toFixed(2)}</b>
-            </span>
-            <span className="text-slate-400">
-              C: <b className={hoveredCandle.isUp ? "text-profit" : "text-loss"}>{hoveredCandle.close.toFixed(2)}</b>
-            </span>
-            <span className="text-slate-400">
-              VOL: <b className="text-cyan-accent">{hoveredCandle.volume}</b>
-            </span>
-          </div>
-        ) : (
-          <div className="absolute top-3 left-4 flex items-center space-x-2 text-[10px] font-mono text-slate-500 pointer-events-none">
-            <Eye className="h-3.5 w-3.5 text-profit" />
-            <span>HOVER ANY CANDLE TO INSPECT OHLC DATA</span>
-          </div>
-        )}
-
-        {/* Volume Label */}
-        <div className="absolute bottom-3 left-4 text-[9px] font-mono uppercase text-slate-500 pointer-events-none">
-          VOLUME HISTOGRAM // CME DEPTH OF MARKET (DOM)
-        </div>
-      </div>
+      )}
     </div>
   );
 }
-

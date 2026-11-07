@@ -53,16 +53,16 @@ export function MagneticButton({
     onClick?.();
   };
 
-  // Base styling for variant
+  // Base styling for variant (Monaco Gold & Obsidian Edition)
   const variantStyles = {
     primary:
-      "bg-profit hover:bg-[#00FFAF] text-[#05070A] font-semibold shadow-[0_0_25px_rgba(0,229,160,0.35)] hover:shadow-[0_0_35px_rgba(0,229,160,0.6)] border border-profit/50",
+      "bg-gradient-to-r from-[#D4AF37] via-[#F5D061] to-[#D4AF37] hover:brightness-115 text-[#040609] font-bold shadow-[0_0_25px_rgba(212,175,55,0.4)] hover:shadow-[0_0_35px_rgba(212,175,55,0.7)] border border-[#F5D061]",
     secondary:
       "bg-white/10 hover:bg-white/15 text-white border border-white/20 backdrop-blur-md shadow-lg",
     glass:
-      "bg-surface/80 hover:bg-surface-light/80 text-white border border-white/10 hover:border-profit/40 backdrop-blur-lg hover:shadow-[0_0_20px_rgba(0,229,160,0.15)]",
+      "bg-surface/80 hover:bg-surface-light/80 text-white border border-white/10 hover:border-gold/50 backdrop-blur-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]",
     outline:
-      "bg-transparent text-slate-200 border border-white/20 hover:border-profit hover:text-profit backdrop-blur-sm",
+      "bg-transparent text-slate-200 border border-gold/30 hover:border-gold hover:text-gold-light backdrop-blur-sm",
   };
 
   const content = (

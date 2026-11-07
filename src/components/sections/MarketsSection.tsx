@@ -3,6 +3,7 @@
 import React from "react";
 import { siteConfig } from "@/config/site";
 import { MarketMiniChart3D } from "@/components/3d/MarketMiniChart3D";
+import { FuturesRiskCalculator } from "@/components/ui/FuturesRiskCalculator";
 import { Activity, Layers, BarChart3 } from "lucide-react";
 
 export function MarketsSection() {
@@ -29,10 +30,13 @@ export function MarketsSection() {
       </div>
 
       {/* Two Interactive 3D Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-12">
         <MarketMiniChart3D market={esMarket} accentColor="profit" />
         <MarketMiniChart3D market={nqMarket} accentColor="cyan" />
       </div>
+
+      {/* Interactive Futures Position Sizer & Risk Calculator */}
+      <FuturesRiskCalculator />
 
       {/* Micro-contract callout badge for beginners / sizing */}
       <div className="mt-12 rounded-2xl border border-white/10 bg-surface/50 p-6 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4">
