@@ -4,6 +4,7 @@ import React from "react";
 import { siteConfig } from "@/config/site";
 import { MarketMiniChart3D } from "@/components/3d/MarketMiniChart3D";
 import { FuturesRiskCalculator } from "@/components/ui/FuturesRiskCalculator";
+import { MarketSessionsRadar } from "@/components/ui/MarketSessionsRadar";
 import { Activity, Layers, BarChart3 } from "lucide-react";
 
 export function MarketsSection() {
@@ -28,6 +29,9 @@ export function MarketsSection() {
           execution becomes second nature. Hover to explore 3D contract specifications.
         </p>
       </div>
+
+      {/* Live Global Market Sessions Radar & NY 9:30 AM Bell Countdown */}
+      <MarketSessionsRadar />
 
       {/* Two Interactive 3D Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-12">
