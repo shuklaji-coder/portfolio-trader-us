@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig, CityPin } from "@/config/site";
 import { GlobeScene } from "@/components/3d/GlobeScene";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { NomadLoadout } from "@/components/ui/NomadLoadout";
 import { soundManager } from "@/lib/sound";
 import { Globe, MapPin, Clock, Compass, Plane } from "lucide-react";
 
@@ -137,6 +138,11 @@ export function TravelSection() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Waylon's Nomad Loadout & Portable Rig */}
+      <div className="mt-16">
+        <NomadLoadout />
       </div>
     </section>
   );

@@ -68,3 +68,4 @@ function TradingViewWidgetComponent({
 }
 
 export const TradingViewWidget = memo(TradingViewWidgetComponent);
+

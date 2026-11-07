@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { PreMarketChecklist } from "@/components/ui/PreMarketChecklist";
 import { soundManager } from "@/lib/sound";
 import {
   Compass,
@@ -154,13 +155,13 @@ export function ProcessSection() {
     <section id="process" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-16">
-        <div className="inline-flex items-center space-x-2 rounded-full border border-white/10 bg-surface/70 px-3.5 py-1 text-xs font-mono text-profit mb-4">
-          <Crosshair className="h-3.5 w-3.5" />
+        <div className="inline-flex items-center space-x-2 rounded-full border border-gold/30 bg-surface/70 px-3.5 py-1 text-xs font-mono text-gold-light mb-4">
+          <Crosshair className="h-3.5 w-3.5 text-gold" />
           <span>EXECUTION PROTOCOL // 4-STEP DISCIPLINE</span>
         </div>
         <h2 className="font-heading text-3xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl">
           Trade With a Plan. <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-profit via-emerald-400 to-cyan-accent">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-yellow-200">
             Never With Emotions.
           </span>
         </h2>
@@ -258,19 +259,24 @@ export function ProcessSection() {
         </GlassCard>
       </motion.div>
 
-      {/* Kremvo Feature Callout Card */}
+      {/* Interactive Pre-Market Discipline Checklist */}
       <div className="mt-12">
+        <PreMarketChecklist />
+      </div>
+
+      {/* Kremvo Feature Callout Card in Monaco Gold */}
+      <div className="mt-8">
         <GlassCard
-          className="p-8 md:p-10 border-profit/30 bg-gradient-to-r from-surface via-[#0C151C] to-surface relative overflow-hidden"
+          className="p-8 md:p-10 border-gold/30 bg-gradient-to-r from-surface via-[#120F08] to-surface relative overflow-hidden"
           glowColor="cyan"
         >
           {/* Subtle background glow */}
-          <div className="absolute right-0 top-0 h-48 w-48 bg-profit/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute right-0 top-0 h-48 w-48 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
             <div className="max-w-xl">
-              <div className="inline-flex items-center space-x-2 rounded-full bg-profit/10 border border-profit/30 px-3 py-1 text-xs font-mono text-profit mb-3">
-                <Sparkles className="h-3.5 w-3.5" />
+              <div className="inline-flex items-center space-x-2 rounded-full bg-gold/10 border border-gold/30 px-3 py-1 text-xs font-mono text-gold-light mb-3">
+                <Sparkles className="h-3.5 w-3.5 text-gold" />
                 <span>{siteConfig.kremvo.badge}</span>
               </div>
               <h3 className="font-heading text-2xl sm:text-3xl font-bold text-white mb-2">

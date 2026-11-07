@@ -61,7 +61,7 @@ export const siteConfig = {
   bio: "Full-time independent futures trader specializing in CME equity index contracts (E-mini & Micro S&P 500, Nasdaq 100). Blending institutional liquidity concepts, algorithmic execution windows, and a location-independent lifestyle.",
   extendedBio: "Trading shouldn't lock you to a dark room with twelve monitors. By focusing on high-conviction NY morning session liquidity setups, I execute with pinpoint precision, manage risk relentlessly, and spend the rest of my days exploring the globe.",
   avatarUrl: "/images/trader-avatar.jpg",
-  
+
   seo: {
     title: "WayTrades | Waylon Skinner — Futures Trader & Digital Nomad",
     description: "Premium personal portfolio of Waylon Skinner (WayTrades). Trading S&P 500 & Nasdaq futures, building community, and exploring the globe.",
