@@ -152,3 +152,4 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     </AnimatePresence>
   );
 }
+

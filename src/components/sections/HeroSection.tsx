@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { TickerTape } from "@/components/ui/TickerTape";
+import { LiveCandleStream } from "@/components/ui/LiveCandleStream";
 import { soundManager } from "@/lib/sound";
 import { ArrowUpRight, Youtube, MessageSquare, Compass, ShieldAlert } from "lucide-react";
 
@@ -127,6 +128,16 @@ export function HeroSection() {
           </MagneticButton>
         </motion.div>
 
+        {/* Continuous Live Candlestick Stream Widget */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full mb-12"
+        >
+          <LiveCandleStream />
+        </motion.div>
+
         {/* Minimal Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -152,3 +163,4 @@ export function HeroSection() {
     </section>
   );
 }
+

@@ -363,3 +363,4 @@ export const siteConfig = {
 
   disclaimer: "Trading futures, options, and foreign exchange involves substantial risk of loss and is not suitable for every investor. An investor could potentially lose all or more than the initial investment. Risk capital is money that can be lost without jeopardizing financial security or lifestyle. Content provided across all platforms is strictly for educational and entertainment purposes and must not be construed as financial or investment advice. Affiliate links may earn a commission at no additional cost to you."
 };
+

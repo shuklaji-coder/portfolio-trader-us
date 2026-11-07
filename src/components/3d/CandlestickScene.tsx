@@ -69,3 +69,4 @@ export function CandlestickScene({ scrollProgress = 0 }: CandlestickSceneProps) 
     </div>
   );
 }
+

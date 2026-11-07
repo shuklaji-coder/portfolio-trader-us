@@ -228,3 +228,4 @@ export function MarketMiniChart3D({
     </div>
   );
 }
+

@@ -50,3 +50,4 @@ export function GlobeScene({ activeCityId, onSelectCity }: GlobeSceneProps) {
     </div>
   );
 }
+

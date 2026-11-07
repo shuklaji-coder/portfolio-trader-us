@@ -11,6 +11,7 @@ interface CandlestickLandscapeProps {
 export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscapeProps) {
   const bodiesRef = useRef<THREE.InstancedMesh>(null);
   const wicksRef = useRef<THREE.InstancedMesh>(null);
+  const dustRef = useRef<THREE.Points>(null);
   const groupRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
 
@@ -69,6 +70,19 @@ export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscap
     return data;
   }, [countX, countZ]);
 
+  // Ambient floating glowing market dust motes
+  const dustPositions = useMemo(() => {
+    const coords = [];
+    for (let i = 0; i < 220; i++) {
+      coords.push(
+        (Math.random() - 0.5) * 36,
+        (Math.random() - 0.5) * 16,
+        (Math.random() - 0.5) * 36
+      );
+    }
+    return new Float32Array(coords);
+  }, []);
+
   // Set initial instanced matrices
   useEffect(() => {
     if (!bodiesRef.current || !wicksRef.current) return;
@@ -113,6 +127,11 @@ export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscap
       groupRef.current.position.y = Math.sin(t * 0.8) * 0.15 - 1.2;
     }
 
+    if (dustRef.current) {
+      dustRef.current.rotation.y = t * 0.03;
+      dustRef.current.rotation.x = Math.sin(t * 0.02) * 0.1;
+    }
+
     // Scroll fly-through camera effect:
     // As the user scrolls, camera pushes forward deeper into the candlestick field
     const targetCamZ = 16 - scrollProgress * 22;
@@ -154,6 +173,26 @@ export function CandlestickLandscape({ scrollProgress = 0 }: CandlestickLandscap
         position={[0, -5, 0]}
         rotation={[0, 0, 0]}
       />
+
+      {/* Floating Ambient Glowing Market Dust Motes */}
+      <points ref={dustRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={dustPositions.length / 3}
+            array={dustPositions}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.08}
+          color="#00E5A0"
+          transparent
+          opacity={0.4}
+          sizeAttenuation
+        />
+      </points>
     </group>
   );
 }
+

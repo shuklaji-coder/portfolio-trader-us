@@ -36,3 +36,4 @@ export function copyToClipboard(text: string): Promise<boolean> {
     });
   }
 }
+
