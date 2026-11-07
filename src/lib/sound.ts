@@ -99,6 +99,18 @@ class SoundEffects {
       // ignore
     }
   }
+
+  playBuy() {
+    this.playClick();
+  }
+
+  playSell() {
+    this.playClick();
+  }
+
+  playTargetHit() {
+    this.playSuccess();
+  }
 }
 
 export const soundManager = new SoundEffects();

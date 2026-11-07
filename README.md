@@ -8,51 +8,56 @@ A luxury, cinematic 3D animated personal portfolio website built for **WayTrades
 
 ## ✨ Features & Storytelling Architecture
 
-1. **Terminal Candlestick Loading Screen**
-   - High-tech loading sequence with interactive candlestick chart drawing itself in real-time.
-   - Smooth 0 → 100% counter with Bloomberg terminal boot logs and curtain reveal.
+1. **Award-Level Apple/Awwwards Cinematic Loading Screen**
+   - Editorial 3-phase kinetic typography sequence:
+     - `[01 // THE DISCIPLINE]` — *"I look at candlesticks."*
+     - `[02 // THE FREEDOM]` — *"And travel the world."*
+     - `[03 // THE TRADER]` — **WAYLON SKINNER** in glowing Monaco Gold & Platinum.
+   - Morphing center glowing candlestick (Green ➔ Liquid Gold ➔ Pure Breakout White).
+   - Giant minimalist monospace counter (`00` ➔ `100%`) with a 2px hairline golden progress track.
+   - Smooth scale/blur exit into the 3D world + 1-click / Spacebar instant skip.
 
 2. **Custom TradingView Crosshair Cursor**
-   - Small pinpoint dot with smooth trailing outer ring.
-   - Dynamically morphs into a TradingView crosshair with price-axis tag when hovering interactive elements.
+   - Pinpoint dot with trailing Monaco Gold spring ring.
+   - Dynamically morphs into a TradingView crosshair with real-time X/Y coordinates when hovering interactive elements.
 
-3. **Hero Section with 3D Candlestick Landscape**
-   - Full-screen procedural 3D scene using React Three Fiber: hundreds of green (`#00E5A0`) and red (`#FF4D5E`) candlesticks floating in space with realistic bodies and wicks.
-   - Real-time mouse parallax, camera tilt, and cinematic bloom postprocessing.
-   - Text-reveal headline animation: *"I look at candlesticks and travel the world."*
-   - Sub-line typed effect: `ES • NQ • Futures • Options`.
-   - Simulated live futures ticker tape (ES, NQ, MES, MNQ) with micro-ticks and green/red flash.
-   - CTAs with magnetic cursor pull: *Join the Discord* and *Watch on YouTube*.
+3. **Hero Section with 1,320 3D Candlesticks & Live Stream**
+   - **Luxury Frosted Glass Command Shield**: Displays **WAYLON SKINNER** in giant Diamond Platinum & Monaco Gold metallic typography with verified CME Globex operator credentials.
+   - **Continuous Live Candlestick Stream (Dual Engine)**:
+     - **Mode A (60 FPS Canvas)**: Full-width panoramic chart with radiant vertical gradient candles, glowing laser wicks, laser trendline ribbon, OHLC hover HUD, and interactive **Paper Trading simulator (BUY / SELL with real-time P&L and confetti victory)**.
+     - **Mode B (Official TradingView)**: Instant switch to live institutional CME futures data.
+   - **Simulated Ticker Tape**: Real-time micro-ticks for ES, NQ, MES, and MNQ with green/red price flash.
+   - **Magnetic CTA Buttons**: *Join the Discord* and *Watch on YouTube*.
 
 4. **About / The Trader**
-   - Scroll-driven camera fly-through deeper into the candlestick matrix.
+   - Scroll-driven camera fly-through deeper into the 3D candlestick field.
    - Glassmorphism bio card with trader profile photo placeholder and trading pillars.
    - Animated stat counters (8.6K+ Instagram followers, 3.2K+ Discord members, 24+ countries traded from, 100% risk discipline — strictly zero fake P&L claims).
 
-5. **Markets I Trade**
-   - Two interactive 3D perspective cards: **S&P 500 (ES / MES)** and **Nasdaq 100 (NQ / MNQ)**.
-   - Tilt physics on mouse hover with dynamic light reflection.
-   - Interactive glowing vector charts with node hover coordinates.
-   - Complete CME contract specifications (tick values, point values, volatility profiles, trading hours).
+5. **Markets I Trade & Global Sessions Radar**
+   - **Global Market Sessions Live Radar**: Real-time ET clock, **New York 9:30 AM Opening Bell countdown timer**, and live status badges for Tokyo/Sydney, London Open, New York RTH, and CME Globex.
+   - Two interactive 3D perspective cards: **S&P 500 (ES / MES)** and **Nasdaq 100 (NQ / MNQ)** with hover tilt and glowing vector charts.
+   - **Interactive Futures Position Sizer & Risk Calculator**: Calculate dollar risk, contract size, and 1:3 R:R targets for ES, MES, NQ, and MNQ.
 
 6. **Trade with a Plan (Process Section)**
    - 4-step execution protocol: **Plan → Execute → Review → Repeat**.
-   - Candlestick pattern visualizers for each step (Liquidity Sweep, Fair Value Gap / FVG, Order Block, Break of Structure).
+   - Candlestick pattern visualizers (Liquidity Sweep, Fair Value Gap / FVG, Order Block, Break of Structure).
    - Dedicated feature callout for **Kremvo** (*"Trade with a plan. Not emotions."*).
+   - **Interactive Pre-Market Discipline Checklist**: 5-point risk check with live progress bar and "Disciplined Trader" badge.
 
 7. **Trading From Everywhere (Travel Section)**
-   - 3D interactive dotted wireframe globe with glowing atmosphere and bezier flight arcs between global trading bases.
+   - 3D interactive dotted wireframe globe with golden bezier flight arcs between global trading bases.
    - Rotating globe focuses on active city pins: **Bali, Tokyo, Dubai, London, New York, Miami, Lisbon, Singapore**.
-   - Interactive diary card displaying local market session overlap and Waylon's field notes.
+   - **The Nomad Loadout**: Waylon's actual travel workstation showcase (MacBook M3 Max, Dual OLED monitors, Starlink Mini, and Celsius Energy Drink affiliate link).
 
 8. **Prop Firm Partners**
-   - Two glass cards for **Alpha Futures** (code `WAY`) and **Tradeify** (code `WAY`).
+   - Two luxury glass cards for **Alpha Futures** (code `WAY`) and **Tradeify** (code `WAY`).
    - Interactive "Copy Code WAY" button with micro-animation and celebratory confetti feedback.
    - Clear *"Official Partner • Affiliate Link"* compliance notices.
 
 9. **Community (Discord Mega Card)**
    - Ambient floating chat bubble particles with live market commentary previews.
-   - Full benefits matrix and free community join CTA.
+   - Full benefits matrix and free community join CTA (`https://discord.gg/HRm9eQuMed`).
 
 10. **Socials, Clocks & Footer**
     - Magnetic hover buttons for Instagram, YouTube, X (Twitter), and Discord.
@@ -65,9 +70,9 @@ A luxury, cinematic 3D animated personal portfolio website built for **WayTrades
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/) (App Router, React 18, TypeScript)
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, React 18, TypeScript)
 - **3D Graphics**: [Three.js](https://threejs.org/) + [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber) + [@react-three/drei](https://github.com/pmndrs/drei) + [@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with Monaco Gold & Obsidian luxury theme
 - **Smooth Scrolling**: [Lenis](https://lenis.darkroom.engineering/) synchronized with [GSAP](https://gsap.com/) ScrollTrigger
 - **Animations & Micro-interactions**: [Framer Motion](https://www.framer-motion.dev/)
 - **Icons**: [Lucide React](https://lucide.dev/)
@@ -85,8 +90,9 @@ All content, links, affiliate codes, cities, stats, and colors are centralized i
 - Trader name, handles, tagline, and bio
 - Stats & metrics
 - Prop firm partner referral URLs & promo codes (Alpha Futures, Tradeify)
-- Discord & YouTube links
+- Discord, YouTube, Instagram & X links
 - Travel cities array (latitude, longitude, market session, notes)
+- Nomad loadout gear items & Celsius affiliate link
 - Ticker tape symbols and decorative prices
 - Legal risk disclaimer text
 ```
@@ -95,65 +101,43 @@ All content, links, affiliate codes, cities, stats, and colors are centralized i
 
 ## 🚀 Local Development Setup
 
-### Prerequisites
-- Node.js 18.17+ or 20+
-- npm or pnpm
-
-### Installation
-
+### 1. Clone & Install
 ```bash
-# Clone or navigate to the project directory
-cd "d:/trader portfolio us"
-
-# Install dependencies
+git clone https://github.com/<YOUR_USERNAME>/waytrades-portfolio.git
+cd waytrades-portfolio
 npm install
-
-# Run the development server
-npm run dev
 ```
 
+### 2. Run Locally
+```bash
+npm run dev
+```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Production Build & Local Preview
-
+### 3. Production Build
 ```bash
-# Compile optimized production bundle
 npm run build
-
-# Start production server
 npm run start
 ```
 
 ---
 
-## ☁️ Deployment Guide (Vercel)
+## 🌐 Deploying to Vercel
 
-This application is optimized for zero-config deployment on **[Vercel](https://vercel.com/)**:
-
-1. Push your repository to **GitHub** or **GitLab**.
-2. Log in to your [Vercel Dashboard](https://vercel.com/dashboard) and click **"Add New Project"**.
-3. Import the repository.
-4. Framework Preset: select **Next.js**.
-5. Build Command: `npm run build` (or leave default).
-6. Output Directory: `.next` (default).
-7. Environment Variables: **None required**.
-8. Click **"Deploy"**.
-
-Your portfolio will deploy with global CDN distribution, edge OpenGraph image generation, and sub-second loading speeds.
-
----
-
-## ⚡ Performance & 60fps Optimization
-
-- **InstancedMesh**: 100s of 3D candlesticks rendered in a single GPU draw call using `THREE.InstancedMesh`.
-- **Adaptive DPR**: Device Pixel Ratio capped at `Math.min(window.devicePixelRatio, 2)` to eliminate thermal throttling on Retina and mobile screens.
-- **Lenis + GSAP Loop**: Lenis runs directly inside GSAP's unified ticker (`gsap.ticker.add`), eliminating duplicate animation frames.
-- **Dynamic Imports**: 3D Canvas scenes are lazily loaded with `next/dynamic` (`ssr: false`) to guarantee zero hydration mismatch.
-- **Accessibility & Reduced Motion**: Automatically detects `prefers-reduced-motion` and scales down bloom and continuous rotations.
+1. Push your repository to GitHub:
+   ```bash
+   git add -A
+   git commit -m "Deploy WayTrades portfolio"
+   git branch -M main
+   git remote add origin https://github.com/<YOUR_USERNAME>/waytrades-portfolio.git
+   git push -u origin main
+   ```
+2. Log in to [Vercel](https://vercel.com) and click **"Add New Project"**.
+3. Select your `waytrades-portfolio` repository and click **Deploy**.
+4. Your site will be live worldwide in under 2 minutes with automatic global CDN and Edge caching!
 
 ---
 
-## 📄 License & Disclaimer
+## ⚖️ Compliance & Disclaimers
 
 Trading futures involves substantial risk of loss and is not suitable for every investor. Content is for educational purposes only, not financial advice. Affiliate links may earn a commission.
-
